@@ -1,0 +1,57 @@
+<div class="fixed">
+  <h1 (click)="showfun()"><b>Startliste</b></h1>
+  <button *ngIf="!addPlayer" (click)="addn($event)" type="button" class="add">neuer Schütze</button>
+  <div *ngIf="!addPlayer" style="width: 30%">
+    <p style="background-color: #FF0000; color: white"><b>Start im nächsten Rennen;<br> bitte jetzt vorbeireiten und zur Startlinie kommen</b></p>
+    <p style="background-color: #00BFFF"><b>Beim Schießen</b></p>
+    <p style="background-color: #04B404"><b>Schießen beendet</b></p>
+  </div>
+  <div class="speaker">
+    <img *ngIf="!addPlayer" src="/assets/_pictures/speakers_red.png" (click)="playAudio('speaker_red.mp3',$event)">
+    <img *ngIf="!addPlayer" src="/assets/_pictures/speakers_blue.png" (click)="playAudio('speaker_blue.mp3',$event)">
+    <img *ngIf="!addPlayer" src="/assets/_pictures/speakers_green.png" (click)="playAudio('speaker_green.mp3',$event)">
+  </div>
+  <img style="position: absolute; top: 20%; left: 65%" *ngIf="!addPlayer" src="/assets/_pictures/refresh.png" (click)="loadData()">
+</div>
+<img *ngIf="fun" src="/assets/_pictures/schock.jpg" style="position: fixed; top: 0; left: 25%; width: 50%; height: 100%" alt="load">
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<table *ngIf="!addPlayer" style="width:100%" class="order-history-table" border="1">
+  <tr>
+    <th><b>Rennen</b></th>
+    <th *ngFor="let lane of countlanes()"><b>{{lane}}</b></th>
+    <th><b>Rennen</b></th>
+  </tr>
+  <tr *ngFor="let race of races">
+    <td class="race" id="clock" style="text-align: center" (click)="nextstate(race)"><b>{{showrace(race[0].time)}}</b>
+    <td id="{{races.indexOf(race) + 1}};{{sh.lane}}" dragula='transfer' [dragulaModel]="shooters"
+        (dragulaModelChange)="shooters = $event" *ngFor="let sh of race">
+      <app-element id="{{sh.id}}" *ngIf="sh.name !== ''; else elseBlock" [shooter$]="sh" style="touch-action: none"></app-element>
+      <ng-template #elseBlock>
+        <div style="background-color: gray">
+          <br><br><br>
+        </div>
+      </ng-template>
+    </td>
+    <td class="race" id="clock" style="text-align: center" (click)="nextstate(race)"><b>{{showrace(race[0].time)}}</b>
+    </td>
+  </tr>
+</table>
+<div *ngIf="addPlayer" class="new">
+  <form class="msform">
+    <fieldset>
+      <h2 class="fs-title">Starter hinzufügen</h2>
+      <input type="text" name="email" placeholder="Name" [(ngModel)]="newShooter.name"/>
+      <input type="text" name="dis" placeholder="Disziplin" [(ngModel)]="newShooter.dicipline"/>
+      <input type="text" name="pass" placeholder="Rennen" [(ngModel)]="newShooter.time"/>
+      <input type="button" name="next" class="next action-button" value="Hinzufügen" (click)="add()">
+    </fieldset>
+  </form>
+</div>
