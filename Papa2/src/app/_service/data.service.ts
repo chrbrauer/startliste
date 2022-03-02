@@ -8,7 +8,8 @@ import {Schuetze} from '../_interface/schuetze';
 })
 export class DataService {
 
-  private serverUrl = 'http://localhost:3000';
+  private serverUrl = 'http://192.168.188.21:3000';
+  // private serverUrl = 'http://localhost:3000';
   public $shooter: Observable<Schuetze[]>;
 
   constructor(

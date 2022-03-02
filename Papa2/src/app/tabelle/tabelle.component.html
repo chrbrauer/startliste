@@ -50,8 +50,9 @@
       <h2 class="fs-title">Starter hinzufügen</h2>
       <input type="text" name="email" placeholder="Name" [(ngModel)]="newShooter.name"/>
       <input type="text" name="dis" placeholder="Disziplin" [(ngModel)]="newShooter.dicipline"/>
-      <input type="text" name="pass" placeholder="Rennen" [(ngModel)]="newShooter.time"/>
+      <input type="number" name="pass" placeholder="Rennen" [(ngModel)]="newShooter.time" required pattern="20"/>
       <input type="button" name="next" class="next action-button" value="Hinzufügen" (click)="add()">
     </fieldset>
   </form>
+  <button type="button" class="next action-button" (click)="addPlayer = false;">Abbrechen</button>
 </div>
