@@ -11,19 +11,20 @@ import {DragulaModule} from 'ng2-dragula';
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    TabelleComponent,
-    ElementComponent,
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    DragulaModule.forRoot()
-  ],
-  providers: [],
-  bootstrap: [TabelleComponent]
+    declarations: [
+        AppComponent,
+        TabelleComponent,
+        ElementComponent,
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        DragulaModule.forRoot()
+    ],
+    providers: [],
+    bootstrap: [TabelleComponent]
 })
+
 export class AppModule {
 }

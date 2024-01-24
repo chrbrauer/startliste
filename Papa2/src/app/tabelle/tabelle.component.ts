@@ -5,6 +5,7 @@ import {interval, Subscription} from 'rxjs';
 import {DataService} from '../_service/data.service';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -27,12 +28,25 @@ export class TabelleComponent implements OnInit, OnDestroy {
     public lastid;
     public fun;
 
+    public wettkaempfe = [{id: "1", name: "Teste"}];
+    public disziplinen = [];
+    public schuetzen = [];
+
+    public Wettkampf;
+
     constructor(
+        public activatedRoute: ActivatedRoute,
         public dataService: DataService,
         public dragularService: DragulaService
+
     ) {
+        /*this.activatedRoute.queryParams.subscribe(params => {
+            this.Wettkampf = params['Wettkampf'];
+
+        });*/
         this.addPlayer = false;
         this.fun = false;
+        this.loadMetaData();
         this.loadData();
         this.newShooter = {
             id: 0,
@@ -79,7 +93,7 @@ export class TabelleComponent implements OnInit, OnDestroy {
             this.drag = false;
         }));
         this.subs.add(dragularService.remove('transfer').subscribe(({el}) => {
-            this.dataService.deleteToDo(el.id).subscribe((data: Schuetze) => {
+            this.dataService.deleteStart(el.id).subscribe((data: Schuetze) => {
 
             });
         }));
@@ -95,9 +109,24 @@ export class TabelleComponent implements OnInit, OnDestroy {
 
     public loadData(): void {
         this.shooters = [];
-        this.dataService.getToDo().subscribe((data: Schuetze[]) => {
-            this.shooters = data;
+        this.dataService.getStarterliste().subscribe((res) => {
+            this.shooters = res['results'];
             this.PrepareData();
+        });
+    }
+
+    public loadMetaData(): void {
+        //this.wettkaempfe = [];
+        this.disziplinen = [];
+        this.schuetzen = [];
+        this.dataService.getWettkaempfe().subscribe((res) => {
+            //this.wettkaempfe = res['results'];
+        });
+        this.dataService.getDisziplinen().subscribe((res) => {
+            this.disziplinen = res['results'];
+        });
+        this.dataService.getSchuetzen().subscribe((res) => {
+            this.schuetzen = res['results'];
         });
     }
 
@@ -209,7 +238,7 @@ export class TabelleComponent implements OnInit, OnDestroy {
             if (s.id === id) {
                 s.lane = nlane;
                 s.time = ntime;
-                this.dataService.putToDo(s).subscribe((data: Schuetze) => {
+                this.dataService.updateStart(s.time, s.lane, s.status, s.id).subscribe((res) => {
                 });
                 return;
             }
@@ -266,7 +295,7 @@ export class TabelleComponent implements OnInit, OnDestroy {
         }
         for (const ce of s) {
             ce.status = ces;
-            this.dataService.putToDo(ce).subscribe((data: Schuetze) => {
+            this.dataService.updateStart(ce.time, ce.lane, ce.status, ce.id).subscribe((res) => {
 
             });
         }
@@ -288,7 +317,7 @@ export class TabelleComponent implements OnInit, OnDestroy {
         const lane = this.getFreeLane(this.newShooter.time);
         if (lane > 0) {
             this.newShooter.lane = lane;
-            this.dataService.postToDo(this.newShooter).subscribe((data: Schuetze) => {
+            this.dataService.createStarter(666,666, 666, this.newShooter.lane, this.newShooter.time).subscribe((res) => {
             });
         }
         this.addPlayer = false;
@@ -316,7 +345,7 @@ export class TabelleComponent implements OnInit, OnDestroy {
         for (const sh of this.shooters) {
             if (sh.time >= time) {
                 sh.time += 1;
-                this.dataService.putToDo(sh).subscribe((data: Schuetze) => {
+                this.dataService.updateStart(sh.time, sh.lane, sh.status, sh.id).subscribe((res) => {
                 });
             }
         }
@@ -356,7 +385,7 @@ export class TabelleComponent implements OnInit, OnDestroy {
         for (const i of this.shooters) {
             if (i.time > r) {
                 i.time -= 1;
-                this.dataService.putToDo(i).subscribe((data: Schuetze) => {
+                this.dataService.updateStart(i.time, i.lane, i.status, i.status).subscribe((res) => {
 
                 });
             }
@@ -393,5 +422,10 @@ export class TabelleComponent implements OnInit, OnDestroy {
                     this.loadData();
                 }
             });
+    }
+
+    public ChangeWettkampf(id: string):void{
+        console.log('Test')
+        window.open(window.location+"?Wettkampf="+id,"_self")
     }
 }

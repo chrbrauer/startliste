@@ -37,9 +37,6 @@ export class ElementComponent implements OnInit {
     if (this.ci === 4) {
       this.shooter$.geschossen = this.getcurrentTime();
     }
-    this.dataService.putToDo(this.shooter$).subscribe((data: Schuetze) => {
-      this.dataService.getGlobalData();
-    });
   }
 
   public getcurrentTime(): string {

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Starterliste v2</title>
+
+  <style>
+    .tableFixHead thead th{
+      position: sticky;
+      top: 210px;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body style="overflow-x: hidden">
+
+<div class="flex-container">
+  <!-- Header mit Bedienelementen -->
+  <div *ngIf="moveStarter.length > 0" class="alert alert-warning alert-dismissible fade show fixed-top bg-transparent border-0"
+       role="alert"
+       style="z-index: 100000">
+    <div class="container bg-info-subtle w-25 rounded p-3">
+      <div class="row justify-content-center" >
+        <div class="col text-center"><h5>Doppelklick auf den Tauschpartner oder einfach mit X abbrechen</h5></div>
+      </div>
+      <div class="row" >
+        <div class="col-3"></div>
+        <div class="col-6" *ngFor="let starter of moveStarter">
+          <app-element [starter]="starter"></app-element>
+        </div>
+
+        <div class="col-2" style="display: flex; align-items: center;">
+          <button type="button" class="close btn bg-transparent"  data-dismiss="alert" aria-label="Close"
+                  (click)="moveStarter = [];">
+            <span aria-hidden="true"><h1>&times;</h1></span>
+          </button>
+        </div>
+        <div class="col-1"></div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="row justify-content-center">
+    <div class="col-12" style="height: 15vh">
+      <div class="flex-container fixed-top  w-100 bg-light rounded shadow">
+        <div class="row justify-content-center">
+          <!--Legende links-->
+          <div class="col-4   text-light" style="display: flex; align-items: center;">
+            <div class="container w-100">
+              <div class="row justify-content-center">
+                <div class="col-11  bg-danger font-colour-light">
+                  <h5>Start im nächsten Rennen;<br>
+                    bitte jetzt vorbereiten und zur Startlinie kommen</h5>
+                </div>
+              </div>
+              <div class="row  justify-content-center mt-3 mb-3">
+                <div class="col-11  bg-info">
+                  <h5>Beim Schießen</h5>
+                </div>
+              </div>
+              <div class="row justify-content-center  ">
+                <div class="col-11  bg-success">
+                  <h5>Schießen beendet</h5>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <!--TITEL mit Wettkampfauswahl und Button-->
+          <div class="col-4  text-center  font-weight-bold">
+            <div class="flex-container">
+              <div class="row justify-content-center">
+                <h1 class="col-12 display-3 ">STARTERLISTE</h1>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-6 text-center ">
+                  <div class="row">
+                    <div class="col">
+                      <div ngbDropdown class="d-inline-block">
+                        <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+                          {{Wettkampf.name}}
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                          <a *ngFor="let wettkampf of wettkaempfe" href="/?Wettkampf=1" ngbDropdownItem>{{wettkampf.name}}</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-5 mt-2 mb-2">
+                  <button type="button" class="btn btn-primary" (click)="OpenCreationDialog()">Schütze hinzufügen</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--Refresh-Knopf-->
+          <div class="col-1 " style="display: flex; align-items: center;">
+            <div class="container">
+              <div class="row justify-content-center">
+                <img class="col-8 btn"
+                     src="assets/_pictures/refresh.png" alt="neuladen"/>
+              </div>
+            </div>
+          </div>
+          <!--Lautsprecherdurchsagen-->
+          <div class="col-3 " style="display: flex; align-items: center;">
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-4 btn"><img
+                  src="assets/_pictures/speakers_red.png"
+                  alt="Roter Lautsprecher"/></div>
+                <div class="col-4 btn"><img
+                  src="assets/_pictures/speakers_blue.png"
+                  alt="Grüner Lautsprecher"/></div>
+                <div class="col-4 btn "><img
+                  src="assets/_pictures/speakers_green.png"
+                  alt="Grüner Lautsprecher"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabelle mit den Startzeiten -->
+  <div class="row justify-content-center mt-5">
+    <div class="col-11">
+      <table class="table tableFixHead table-hover table-striped-columns">
+        <thead class="text-center ">
+        <tr >
+          <th scope="col">Zeit</th>
+          <th *ngFor="let bahn of labels" scope="col">{{bahn}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let race of races">
+          <th scope="row">{{races.indexOf(race) + 1}}</th>
+          <td *ngFor="let starter of race">
+            <app-element (dblclick)="move(starter)" [starter]="starter"></app-element>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
+

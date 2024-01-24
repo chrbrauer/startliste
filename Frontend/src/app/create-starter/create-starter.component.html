@@ -1,0 +1,44 @@
+<h1 mat-dialog-title class="text-center">{{data.title}}</h1>
+<div class="container" mat-dialog-content>
+  <div class="row justify-content-center">
+    <div class="col-10">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="data.starter.name">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-10">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Disziplin</mat-label>
+        <input matInput [(ngModel)]="data.starter.disziplin">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-10">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Rennen</mat-label>
+        <input matInput type="number"  [(ngModel)]="data.starter.zeit">
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-10">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Bahn</mat-label>
+        <input matInput type="number" [(ngModel)]="data.starter.bahn">
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions class="row justify-content-center align-self-center w-75 mb-2 border">
+  <div class="col-6 text-center">
+    <button type="button" class="btn btn-secondary" mat-button (click)="onNoClick()">Cancel</button>
+  </div>
+  <div class="col-6 text-center">
+    <button type="button" class="btn btn-primary" mat-raised-button color="primary" (click)="onYesClick()">Hinzufügen</button>
+  </div>
+</div>

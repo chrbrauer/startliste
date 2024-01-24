@@ -4,56 +4,78 @@ import {Observable} from 'rxjs';
 import {Schuetze} from '../_interface/schuetze';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class DataService {
 
-  private serverUrl = 'http://192.168.188.21:3000';
-  // private serverUrl = 'http://localhost:3000';
-  public $shooter: Observable<Schuetze[]>;
+    //private serverUrl = 'http://192.168.188.21:3000';
+    private serverUrl = 'http://localhost:3000';
 
-  constructor(
-    private http: HttpClient
-  ) {
-  }
+    constructor(
+        private http: HttpClient
+    ) {
+    }
 
-  public getGlobalData(): void {
-    this.$shooter = this.getToDo();
-  }
 
-  // POST
-  public postToDo(object: Schuetze): Observable<Schuetze> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post<Schuetze>(`${this.serverUrl}/Schuetzen`, object, httpOptions);
-  }
+    // POST
+    public createSchuetze(vorname: string, nachname: string, slg: string) {
+        return this.http.post(`${this.serverUrl}/Schuetze`, {}, {
+            params: {
+                vorname: vorname,
+                nachname: nachname,
+                SLG: slg
+            }
+        });
+    }
 
-  // GET
-  getToDo(): Observable<Schuetze[]> {
-    return this.http.get<Schuetze[]>(`${this.serverUrl}/Schuetzen`);
-  }
+    // POST
+    public createStarter(wettkampf_id: number, Schuetze_id: number, disziplin_id: number, bahn: number, zeit: number) {
+        return this.http.post(`${this.serverUrl}/Start`, {}, {
+            params: {
+                schuetze_id: Schuetze_id.toString(),
+                wettkampf_id: wettkampf_id.toString(),
+                disziplin_id: disziplin_id.toString(),
+                bahn: bahn.toString(),
+                zeit: zeit.toString()
+            }
+        });
+    }
 
-  // DELETE
-  public deleteToDo(id: string): Observable<Schuetze> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.delete<Schuetze>(`${this.serverUrl}/Schuetzen/${id}`, httpOptions);
-  }
+    // GET
+    getSchuetzen(): Observable<any> {
+        return this.http.get(`${this.serverUrl}/Schuetze`);
+    }
 
-  // PUT
-  public putToDo(object: Schuetze): Observable<Schuetze> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.put<Schuetze>(`${this.serverUrl}/Schuetzen/${object.id}`, object, httpOptions);
-  }
+    // GET
+    getDisziplinen(): Observable<any> {
+        return this.http.get(`${this.serverUrl}/Wettkampf`);
+    }
+
+    // GET
+    getWettkaempfe(): Observable<any> {
+        return this.http.get(`${this.serverUrl}/Disziplin`);
+    }
+
+    // GET
+    getStarterliste(): Observable<any> {
+        return this.http.get(`${this.serverUrl}/Starterliste`);
+    }
+
+    // DELETE
+    public deleteStart(id: string) {
+        return this.http.delete(`${this.serverUrl}/Start`, {params: {starter_id: id}});
+    }
+
+    // PUT
+    public updateStart(zeit: number, bahn: number, status: number, id: number) {
+        return this.http.put<Schuetze>(`${this.serverUrl}/Start`, {}, {
+            params: {
+                zeit: zeit.toString(),
+                bahn: bahn.toString(),
+                status: status.toString(),
+                starter_id: id.toString()
+            }
+        });
+    }
 
 }
