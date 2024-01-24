@@ -38,7 +38,7 @@ export class ElementComponent {
     this.isSingleClick = false;
   }
 
-  public move($event): void {
+  public move(): void {
     if (this.starter.status == 0)
       this.starter.status = 3
     else {
@@ -50,6 +50,16 @@ export class ElementComponent {
     this.dataService.updateStart(this.starter.zeit, this.starter.bahn, this.starter.status, this.starter.id).subscribe((res) => {
     })
 
+  }
+  convert(word): string {
+    word = word.replace('Ã¤', 'ä');
+    word = word.replace('Ã¶', 'ö');
+    word = word.replace('Ã¼', 'ü');
+    word = word.replace('ÃŸ', 'ß');
+    word = word.replace('Ã„', 'Ä');
+    word = word.replace('Ã–', 'Ö');
+    word = word.replace('Ãœ', 'Ü');
+    return word;
   }
 
 

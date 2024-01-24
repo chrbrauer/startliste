@@ -2,8 +2,8 @@
   <div *ngIf="starter.id != undefined" class="container"  (click)="method1CallForClick()" (dblclick)="method2CallForDblClick()">
     <div class="row justify-content-center">
       <div class="col-11  py-2 border rounded shadow text-center {{colors[starter.status]}} font-weight-bolder" style="overflow-wrap: break-word;">
-        <h6>{{starter.name}}</h6>
-        <h6>{{starter.disziplin}}</h6>
+        <h6>{{convert(starter.name)}}</h6>
+        <h6>{{convert(starter.disziplin)}}</h6>
       </div>
     </div>
   </div>

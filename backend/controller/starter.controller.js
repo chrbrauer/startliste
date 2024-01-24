@@ -91,7 +91,7 @@ module.exports.createWettkampf = (req, res) => {
 
 module.exports.createStart = (req, res) => {
     const query = 'INSERT INTO Starter(name, disziplin, wettkampf_id, zeit, bahn, status) VALUES (?,?,?,?,?,?)';
-    connection.query(query, [req.query['name'], req.query['disziplin'], req.query['wettkampf_id'], req.query['zeit'], req.query['bahn'], '0'], (error, results) => {
+    connection.query(query, [converter(req.query['name']), converter(req.query['disziplin']), req.query['wettkampf_id'], req.query['zeit'], req.query['bahn'], '0'], (error, results) => {
         if (error) throw error;
         return res.status(200).json({status: true, content: results})
     });

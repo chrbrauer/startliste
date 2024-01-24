@@ -1,7 +1,7 @@
 import {ActivatedRoute, RouterOutlet} from '@angular/router';
 import {Component} from '@angular/core';
 import {DataService} from "./_services/data.service";
-import {Subscription} from "rxjs";
+import {interval, Subscription} from "rxjs";
 import {Starter} from "./_models/starter";
 import {Wettkampf} from "./_models/wettkampf";
 import {NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
@@ -34,6 +34,7 @@ export class AppComponent {
   public wettkaempfe: Wettkampf[] = [];
   public disziplinen = [];
   public moveStarter: Starter[] = [];
+  public updateSubscription;
 
   public wettkampf_id;
   public Wettkampf
@@ -81,6 +82,12 @@ export class AppComponent {
   public createRaces(liste: Starter[], rennen: number, bahnen: number): Starter[][] {
     const result: Starter[][] = []
     for (let i = 1; i < rennen; i++) {
+      if (i % 5 == 0){
+        const placeholder_race: Starter[] = []
+        for (let k = 1; k <= bahnen; k++)
+          placeholder_race.push(this.createPlaceholder(-1, k))
+        result.push(placeholder_race)
+      }
 
       const searched_racer = liste.filter((ce) => {
         return ce.zeit == i
@@ -155,6 +162,36 @@ export class AppComponent {
       }
     });
   }
+
+  convert(word): string {
+    word = word.replace('Ã¤', 'ä');
+    word = word.replace('Ã¶', 'ö');
+    word = word.replace('Ã¼', 'ü');
+    word = word.replace('ÃŸ', 'ß');
+    word = word.replace('Ã„', 'Ä');
+    word = word.replace('Ã–', 'Ö');
+    word = word.replace('Ãœ', 'Ü');
+    return word;
+  }
+
+  playAudio(n: string): void {
+    const audio = new Audio();
+    audio.src = '/assets/_sounds/' + n;
+    audio.load();
+    audio.play();
+  }
+
+  public refresh(): void {
+    this.updateSubscription = interval(10000).subscribe(
+      (val) => {
+        if (this.moveStarter.length == 0) {
+          this.loadData(this.wettkampf_id);
+        }
+      });
+  }
+
+
+
 
 
 }

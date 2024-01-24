@@ -52,18 +52,18 @@
             <div class="container w-100">
               <div class="row justify-content-center">
                 <div class="col-11  bg-danger font-colour-light">
-                  <h5>Start im nächsten Rennen;<br>
-                    bitte jetzt vorbereiten und zur Startlinie kommen</h5>
+                  <h6>Start im nächsten Rennen;<br>
+                    bitte jetzt vorbereiten und zur Startlinie kommen</h6>
                 </div>
               </div>
               <div class="row  justify-content-center mt-3 mb-3">
                 <div class="col-11  bg-info">
-                  <h5>Beim Schießen</h5>
+                  <h6>Beim Schießen</h6>
                 </div>
               </div>
               <div class="row justify-content-center  ">
                 <div class="col-11  bg-success">
-                  <h5>Schießen beendet</h5>
+                  <h6>Schießen beendet</h6>
                 </div>
               </div>
             </div>
@@ -81,10 +81,10 @@
                     <div class="col">
                       <div ngbDropdown class="d-inline-block">
                         <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
-                          {{Wettkampf.name}}
+                          {{convert(Wettkampf.name)}}
                         </button>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                          <a *ngFor="let wettkampf of wettkaempfe" href="/?Wettkampf=1" ngbDropdownItem>{{wettkampf.name}}</a>
+                          <a *ngFor="let wettkampf of wettkaempfe" href="/?Wettkampf=1" ngbDropdownItem>{{convert(wettkampf.name)}}</a>
                         </div>
                       </div>
                     </div>
@@ -102,8 +102,8 @@
           <div class="col-1 " style="display: flex; align-items: center;">
             <div class="container">
               <div class="row justify-content-center">
-                <img class="col-8 btn"
-                     src="assets/_pictures/refresh.png" alt="neuladen"/>
+                <img class=" btn col-8"
+                     src="assets/_pictures/refresh.png" alt="neuladen" (click)="loadData(wettkampf_id)"/>
               </div>
             </div>
           </div>
@@ -113,13 +113,13 @@
               <div class="row justify-content-center">
                 <div class="col-4 btn"><img
                   src="assets/_pictures/speakers_red.png"
-                  alt="Roter Lautsprecher"/></div>
+                  alt="Roter Lautsprecher" (click)="playAudio('speaker_red.mp3')"/></div>
                 <div class="col-4 btn"><img
                   src="assets/_pictures/speakers_blue.png"
-                  alt="Grüner Lautsprecher"/></div>
+                  alt="Grüner Lautsprecher" (click)="playAudio('speaker_blue.mp3')"/></div>
                 <div class="col-4 btn "><img
                   src="assets/_pictures/speakers_green.png"
-                  alt="Grüner Lautsprecher"/>
+                  alt="Grüner Lautsprecher" (click)="playAudio('speaker_blue.mp3')"/>
                 </div>
               </div>
             </div>
@@ -141,7 +141,15 @@
         </thead>
         <tbody>
         <tr *ngFor="let race of races">
-          <th scope="row">{{races.indexOf(race) + 1}}</th>
+          <th scope="row" *ngIf="race[0].zeit == -1"><div  class="container">
+            <div class="row justify-content-center">
+              <div class="col-11 py-2 border rounded shadow text-center bg-opacity-75 bg-dark font-weight-bolder">
+                <br>
+                <br>
+              </div>
+            </div>
+          </div></th>
+          <th scope="row" style="text-align: center; vertical-align: middle;" *ngIf="race[0].zeit != -1">{{race[0].zeit}}</th>
           <td *ngFor="let starter of race">
             <app-element (dblclick)="move(starter)" [starter]="starter"></app-element>
           </td>
