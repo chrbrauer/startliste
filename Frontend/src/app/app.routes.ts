@@ -2,8 +2,8 @@ import { Routes } from '@angular/router';
 import {AppComponent} from "./app.component";
 
 export const routes: Routes = [{
-  path: '', component: AppComponent,
+  path: '/starterlisteV2', component: AppComponent,
   children: []
 },  {
-  path: '', redirectTo: '/', pathMatch: 'full'
+  path: '/starterlisteV2', redirectTo: '/starterlisteV2', pathMatch: 'full'
 }];
